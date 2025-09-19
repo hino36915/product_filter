@@ -52,17 +52,44 @@ try:
               print(f"警告：檔案 {file_path} 沒有對應的設定，已跳過。")        
 
 
-
-        merge_df =dataframes["prod_main-sampled-20250902.csv"]
+    merge_df =dataframes["prod_main-sampled-20250902.csv"]
     
-    for file_name in all_files[1:]:
-        if file_name in all_files[1:]:
+    
+    
+    prod_id_join_files = [
+        "prod_detail-sampled-20250902.csv",
+        "prod_category-sampled-20250902.csv",
+        "detail_image-sampled-20250902.csv",
+        "detail_sku-sampled-20250902.csv" 
+    ]
+    multi_join_files = [
+        "detail_sku_attr-20250902.csv",
+        "detail_sku_image-sampled-20250902.csv"
+    ]
+    for file_name in prod_id_join_files:
+        
             print(f"正在合併 : {file_name}")
             merge_df = pd.merge(merge_df,
                                   dataframes[file_name],
                                   on="prod_id",
                                   how="left"
+                                  
                                   )
+            
+            
+            
+     
+    for file_name in multi_join_files:
+           if file_name in dataframes:
+                print(f"正在合併 : {file_name}")
+                merge_df = pd.merge(merge_df,
+                                  dataframes[file_name],
+                                  on=["prod_id","sku_id"],
+                                  how="left"
+                                  
+                                  )
+            
+            
      
         
 except Exception as e:
